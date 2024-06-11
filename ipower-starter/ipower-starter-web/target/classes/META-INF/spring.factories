@@ -1,0 +1,14 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+com.ipower.service.core.envaware.MarsServiceCoreDefaulEnvPropertySource
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.ipower.service.config.MarsHttpCheckEndPointAutoConfiguration,\
+com.ipower.service.config.DefaultHttpSecurityConfiguration,\
+com.ipower.service.config.JsonAutoConfiguration,\
+com.ipower.service.config.ExceptionAutoConfiguration,\
+com.ipower.service.config.SwaggerAutoConfiguration,\
+com.ipower.service.config.RedisUtilAutoConfiguration,\
+com.ipower.service.config.SpringMvcGetConvertConfiguration,\
+com.ipower.service.config.CrosFilterConfiguration,\
+com.ipower.service.config.LocaleResolverAutoConfig,\
+com.ipower.service.config.HttpFirewallConfiguration
+

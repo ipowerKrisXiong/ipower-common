@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ipower.framework</groupId>
+        <artifactId>ipower-dependencies</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../ipower-dependencies</relativePath>
+    </parent>
+
+    <!--定义了 Spring Boot 应用程序的标准构建配置,子pom全部继承该标准 可以减少在项目 POM 文件中需要指定的配置，因为很多默认的最佳实践已经被定义好了。这样可以确保你的项目与 Spring Boot 的标准保持一致-->
+    <artifactId>ipower-springboot-parent</artifactId>
+    <name>mars-springboot-parent</name>
+    <description>springboot service,not include mvc,include springboot autoconfig,log,yaml,properties project base parent</description>
+    <packaging>pom</packaging>
+
+    <!--版本管理,必须要加个版本管理,否则子类直接加个依赖不写版本就无法继承父类依赖的版本了，会报没有版本 -->
+    <dependencyManagement>
+        <dependencies>
+        </dependencies>
+    </dependencyManagement>
+
+    <properties>
+        <!-- Build plugin dependencies -->
+        <extra-enforcer-rules.version>1.3</extra-enforcer-rules.version>
+        <dependency-mediator-maven-plugin.version>1.0.2</dependency-mediator-maven-plugin.version>
+        <clirr-maven-plugin.version>2.7</clirr-maven-plugin.version>
+        <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
+    </properties>
+
+    <dependencies>
+        <!--单体启动的starter包 这是Spring Boot的核心启动器，包含了自动配置、日志和YAML-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+       <!--h2数据库，一般单元测试用 -->
+<!--        <dependency>-->
+<!--            <groupId>com.h2database</groupId>-->
+<!--            <artifactId>h2</artifactId>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <!--jar name define -->
+        <finalName>${project.artifactId}</finalName>
+        <!--统一maven编译阶段对资源的复制控制-->
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>i18n/**</include>
+                    <include>config/**</include>
+                    <include>application.properties</include>
+                    <include>application-${env}.properties</include>
+                    <include>bootstrap.properties</include>
+                    <include>bootstrap-${env}.properties</include>
+                    <include>application-route.properties</include>
+                    <include>application-sharding.properties</include>
+                    <include>application.yml</include>
+                    <include>application-${env}.yml</include>
+                    <include>bootstrap.yml</include>
+                    <include>bootstrap-${env}.yml</include>
+                    <include>application-route.yml</include>
+                    <include>application-sharding.yml</include>
+                    <include>data/*</include>
+                    <include>public/**</include>
+                    <include>static/**</include>
+                    <include>templates/**</include>
+                    <include>mapper/*</include>
+                    <include>*.pfx</include>
+                    <include>META-INF/**</include>
+                    <include>*.sql</include>
+                    <include>script/**</include>
+                </includes>
+                <excludes>
+                    <exclude>config/mybatis-generator.properties</exclude>
+                    <exclude>config/mybatis-generator-config.xml</exclude>
+                    <exclude>config/**/*.pem</exclude>
+                    <exclude>config/**/*.p12</exclude>
+                    <!--几个js的文字格式文件不能复制，不然会破坏他的2进制结构导致未知错误 -->
+                    <exclude>static/fonts/**</exclude>
+                    <exclude>static/**/*.ttf</exclude>
+                    <exclude>static/**/*.woff</exclude>
+                    <exclude>static/**/*.eot</exclude>
+                    <exclude>static/**/*.svg</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <!-- 不过滤下面列表,不对文件中的placeholder做properties中的key-value替换 -->
+                <includes>
+                    <include>config/**/*.pem</include>
+                    <include>config/**/*.p12</include>
+                    <include>static/fonts/**</include>
+                    <include>static/**/*.ttf</include>
+                    <include>static/**/*.woff</include>
+                    <include>static/**/*.eot</include>
+                    <include>static/**/*.svg</include>
+                </includes>
+            </resource>
+            <!--启动文件-->
+            <resource>
+                <directory>src/main/resources/sh</directory>
+                <filtering>true</filtering>
+                <targetPath>../</targetPath>
+            </resource>
+        </resources>
+
+        <!-- plugins dependencies-->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <!-- 过滤后缀为pem、pfx的证书文件 -->
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>pem</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>pfx</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>p12</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+            <!--需要按需要引入，因为有的是2方库只需要打成jar不需要打成springboot包 -->
+            <!--<plugin>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+            <!--</plugin>-->
+            <!--为了识别reversion版本占位符的写法，要使用这个插件 https://blog.csdn.net/sayyy/article/details/103994302-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+<!--                <version>1.1.0</version>-->
+                <configuration>
+                    <!-- 是否更新pom文件，此处还有更高级的用法 -->
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+          <!--检查版本兼容性 结果中展示哪些类和哪些类的哪些方法和之前的版本发生了变化，只关心方法的参数类型和返回类型和类字段的删除，并不关心增加了哪些类和哪些字段。
+          mvn clirr:check -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>clirr-maven-plugin</artifactId>
+                <version>${clirr-maven-plugin.version}</version>
+            </plugin>
+            <!--寻找依赖冲突类 mvn mediator:check -->
+            <plugin>
+                <groupId>com.github.vongosling</groupId>
+                <artifactId>dependency-mediator-maven-plugin</artifactId>
+                <version>${dependency-mediator-maven-plugin.version}</version>
+            </plugin>
+            <!--在进行mvn compile的时候，会在console中打印出来冲突的jar版本和其父pom 这个时候，我们看一眼就知道应该把那个dependency中的哪个jar进行exclude -->
+            <!--            https://maven.apache.org/enforcer/enforcer-rules/index.html-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven-enforcer-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-ban-circular-dependencies</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <rules>
+                        <!--检查循环依赖 -->
+                        <banCircularDependencies />
+                        <!-- 这个会让强制让所有依赖收敛于一个版本，太严格去掉，很多三方包必须要用到自己又没有收敛，比如比如tencentcloud-sdk-java-kms:3.1.213-->
+                        <!--<dependencyConvergence />-->
+                    </rules>
+                    <fail>true</fail>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>extra-enforcer-rules</artifactId>
+                        <version>${extra-enforcer-rules.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--定义常用的profile场景 -->
+    <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <env>local</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <env>dev</env>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>pre</id>
+            <properties>
+                <env>pre</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>pro</id>
+            <properties>
+                <env>pro</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>uat</id>
+            <properties>
+                <env>uat</env>
+            </properties>
+        </profile>
+    </profiles>
+
+</project>

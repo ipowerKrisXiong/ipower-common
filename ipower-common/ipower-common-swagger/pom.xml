@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ipower.framework.common</groupId>
+        <artifactId>ipower-common-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../ipower-common-parent</relativePath>
+    </parent>
+
+    <artifactId>ipower-common-swagger</artifactId>
+    <packaging>jar</packaging>
+    <name>ipower-common-swagger</name>
+    <description>common util for swagger</description>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+        </dependency>
+
+        <!--spring boot web-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+    </build>
+
+</project>

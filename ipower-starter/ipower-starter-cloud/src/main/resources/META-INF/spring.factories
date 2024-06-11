@@ -1,0 +1,4 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+com.mars.springcloud.enhancecore.envaware.MarsSpringCloudDefaulEnvPropertySource
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.mars.springcloud.starter.MarsFeignAutoConfiguration
